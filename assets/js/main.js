@@ -1,10 +1,10 @@
 /**
- * Template Name: Axis
- * Template URL: https://bootstrapmade.com/axis-bootstrap-corporate-template/
- * Updated: Sep 13 2025 with Bootstrap v5.3.8
- * Author: BootstrapMade.com
- * License: https://bootstrapmade.com/license/
- */
+* Template Name: Axis
+* Template URL: https://bootstrapmade.com/axis-bootstrap-corporate-template/
+* Updated: Sep 13 2025 with Bootstrap v5.3.8
+* Author: BootstrapMade.com
+* License: https://bootstrapmade.com/license/
+*/
 
 (function() {
   "use strict";
@@ -15,9 +15,7 @@
   function toggleScrolled() {
     const selectBody = document.querySelector('body');
     const selectHeader = document.querySelector('#header');
-    if (!selectHeader.classList.contains('scroll-up-sticky') && 
-        !selectHeader.classList.contains('sticky-top') && 
-        !selectHeader.classList.contains('fixed-top')) return;
+    if (!selectHeader.classList.contains('scroll-up-sticky') && !selectHeader.classList.contains('sticky-top') && !selectHeader.classList.contains('fixed-top')) return;
     window.scrollY > 100 ? selectBody.classList.add('scrolled') : selectBody.classList.remove('scrolled');
   }
 
@@ -34,7 +32,6 @@
     mobileNavToggleBtn.classList.toggle('bi-list');
     mobileNavToggleBtn.classList.toggle('bi-x');
   }
-
   if (mobileNavToggleBtn) {
     mobileNavToggleBtn.addEventListener('click', mobileNavToogle);
   }
@@ -48,6 +45,7 @@
         mobileNavToogle();
       }
     });
+
   });
 
   /**
@@ -82,8 +80,7 @@
       window.scrollY > 100 ? scrollTop.classList.add('active') : scrollTop.classList.remove('active');
     }
   }
-
-  scrollTop?.addEventListener('click', (e) => {
+  scrollTop.addEventListener('click', (e) => {
     e.preventDefault();
     window.scrollTo({
       top: 0,
@@ -149,6 +146,7 @@
         }
       }, false);
     });
+
   });
 
   /**
@@ -188,67 +186,26 @@
     }
   });
 
-  // ───────────────────────────────────────────────
-  // Простая и надёжная логика подсветки меню (старый скроллспай полностью закомментирован)
-  // ───────────────────────────────────────────────
+  /**
+   * Navmenu Scrollspy
+   */
+  let navmenulinks = document.querySelectorAll('.navmenu a');
 
-  const navLinks = document.querySelectorAll('#navmenu a');
-
-  // При клике — сразу ставим active и запоминаем выбор
-  navLinks.forEach(link => {
-    link.addEventListener('click', function(e) {
-      // Убираем у всех
-      navLinks.forEach(l => l.classList.remove('active'));
-      // Ставим на этот
-      this.classList.add('active');
-      // Запоминаем для скролла (если нужно вернуть позже)
-      window.lastManualActive = this.getAttribute('href');
-    });
-  });
-
-  // Функция обновления активного пункта при скролле (пока закомментирована — чтобы не мешала тесту)
-  /*
-  function updateActiveOnScroll() {
-    let scrollPos = window.scrollY + 220;
-    let foundActive = false;
-
-    navLinks.forEach(link => {
-      if (!link.hash) return;
-      let section = document.querySelector(link.hash);
+  function navmenuScrollspy() {
+    navmenulinks.forEach(navmenulink => {
+      if (!navmenulink.hash) return;
+      let section = document.querySelector(navmenulink.hash);
       if (!section) return;
-
-      let top = section.offsetTop;
-      let height = section.offsetHeight;
-
-      if (scrollPos >= top && scrollPos < top + height) {
-        navLinks.forEach(l => l.classList.remove('active'));
-        link.classList.add('active');
-        foundActive = true;
+      let position = window.scrollY + 200;
+      if (position >= section.offsetTop && position <= (section.offsetTop + section.offsetHeight)) {
+        document.querySelectorAll('.navmenu a.active').forEach(link => link.classList.remove('active'));
+        navmenulink.classList.add('active');
+      } else {
+        navmenulink.classList.remove('active');
       }
-    });
-
-    // Если ничего не нашли — оставляем последний кликнутый
-    if (!foundActive && window.lastManualActive) {
-      const manualLink = document.querySelector(`#navmenu a[href="${window.lastManualActive}"]`);
-      if (manualLink) {
-        navLinks.forEach(l => l.classList.remove('active'));
-        manualLink.classList.add('active');
-      }
-    }
+    })
   }
-
-  window.addEventListener('load', updateActiveOnScroll);
-  document.addEventListener('scroll', updateActiveOnScroll);
-  */
-
-  // Если страница открыта с # в URL — сразу подсвечиваем
-  if (window.location.hash) {
-    const initialLink = document.querySelector(`#navmenu a[href="${window.location.hash}"]`);
-    if (initialLink) {
-      navLinks.forEach(l => l.classList.remove('active'));
-      initialLink.classList.add('active');
-      window.lastManualActive = window.location.hash;
-    }
-  }
+  window.addEventListener('load', navmenuScrollspy);
+  document.addEventListener('scroll', navmenuScrollspy);
 
 })();
